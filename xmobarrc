@@ -1,0 +1,49 @@
+Config { overrideRedirect = False
+       , font     = "xft:Mononoki:pixelsize=16:antialias=true:hinting=true, Hack Nerd Font:pixelsize=16"
+       , additionalFonts = ["xft:Mononoki:pixelsize=12"]
+       , bgColor  = "#282c34"
+       , fgColor  = "#f8f8f2"
+       , lowerOnStart = True
+       , allDesktops = True
+       , position = TopW L 97 23
+       , iconRoot = "/home/mo/.config/xmonad/xpm/"
+       , commands = [
+		              Run BatteryP ["BAT0", "BAT1"]
+		       	    [ "--template", "\xf240  <left>%"
+                        , "L", "10"
+                        , "H", "90"
+                        , "--high", "green"
+                        , "--low", "red"
+			            ] 600
+                    , Run Cpu
+                        [ "--template", "\xeacd <total>%"
+                        , "-L", "3"
+                        , "-H", "50"
+                        , "--high"  , "red"
+                        , "--normal", "green"
+                        ] 10
+                    , Run Alsa "default" "Master"
+                        [ "--template", "\xf9c2<status><fn=1><volumevbar></fn>"
+                        , "--suffix"  , "True"
+                        , "--"
+                        , "--on", ""
+                        ]
+                    , Run DiskU
+                        [ ("/", "\xf7c9 <free>")
+                        ] [] 20
+                    , Run Brightness [
+                          "--template", "\xf5df <fn=1><vbar></fn>"
+                        , "--"
+                        , "-D", "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight"
+                        , "-C", "actual_brightness"
+                        , "-M", "max_brightness"
+                        ] 20
+                    , Run Date "%a %Y-%m-%d <fc=#8be9fd>(%H:%M)</fc>" "date" 10
+                    , Run XMonadLog
+                    , Run UnsafeStdinReader
+                    ]
+       , sepChar  = "%"
+       , alignSep = "}{"
+       , template = "<action=`xdotool`><icon=index.xpm/></action>%XMonadLog% }{%cpu% | %alsa:default:Master% | %bright% | %battery% | %disku% | %date% "
+       }
+
